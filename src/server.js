@@ -18,9 +18,10 @@ await fastify.register(cors, {
 });
 
 await fastify.register(rateLimit, {
-  global: false, // we set limits per-route
+  global: false,
   max: 60,
   timeWindow: '1 minute',
+  keyGenerator: (req) => req.ipHash || req.ip,
 });
 
 // Privacy-friendly per-IP identity for rate limiting + dedupe (never store raw IP).
