@@ -5,7 +5,11 @@ import { supabase } from '../lib/clients.js';
 export default async function trialRoutes(fastify) {
   fastify.post('/api/trial', {
     config: {
-      rateLimit: { max: 3, timeWindow: '1 day' }, // per IP, generous for beta
+      rateLimit: {
+        max: 3,
+        timeWindow: '1 day',
+        keyGenerator: (req) => req.ipHash || req.ip,
+      },
     },
     schema: {
       body: {
